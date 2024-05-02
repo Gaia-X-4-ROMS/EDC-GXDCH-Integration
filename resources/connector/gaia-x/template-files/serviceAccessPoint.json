@@ -1,0 +1,22 @@
+{
+    "@context": [
+        "https://www.w3.org/2018/credentials/v1",
+        "https://w3id.org/security/suites/jws-2020/v1",
+        "https://registry.lab.gaia-x.eu/development/api/trusted-shape-registry/v1/shapes/jsonld/trustframework#"
+    ],
+    "type": [
+        "VerifiableCredential"
+    ],
+    "id": "",
+    "issuer": "",
+    "issuanceDate": "",
+    "credentialSubject": {
+        "@type": "gx:ServiceAccessPoint",
+        "gx:host": "ces-development.lab.gaia-x.eu",
+        "gx:port": "443",
+        "gx:protocol": "https",
+        "gx:version": "1.0.0",
+        "gx:openAPI": "adresse",
+        "id": ""
+    }
+}

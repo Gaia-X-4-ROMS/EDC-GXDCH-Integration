@@ -1,0 +1,130 @@
+<mat-dialog-content>
+  <div class="form-group">
+    <h4>Properties for EDC Asset</h4>
+    <div>
+      <mat-form-field class="form-field" color="accent">
+        <mat-label>Id</mat-label>
+        <input [(ngModel)]="id" matInput>
+      </mat-form-field>
+      <mat-form-field class="form-field" color="accent">
+        <mat-label>Asset Name</mat-label>
+        <input [(ngModel)]="name" matInput>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field class="form-field" color="accent" id="form-field-description">
+        <mat-label>Asset Description</mat-label>
+        <input [(ngModel)]="description" matInput>
+      </mat-form-field>
+      <mat-form-field class="form-field" color="accent">
+        <mat-label>Content Type</mat-label>
+        <input [(ngModel)]="contenttype" matInput [placeholder]="'text/plain'">
+      </mat-form-field>
+
+      <mat-form-field class="form-field" color="accent">
+        <mat-label>Version</mat-label>
+        <input [(ngModel)]="version" matInput [placeholder]="'1.0'">
+      </mat-form-field>
+    </div>
+
+    <div>
+      <mat-form-field class="form-field" color="accent" id="form-field-destination">
+        <mat-label>Data Source</mat-label>
+        <mat-select [(ngModel)]="storageTypeId">
+          <mat-option *ngFor="let storageType of storageTypes " [value]="storageType.id">
+            {{storageType.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      </div>
+
+      <div>
+      <mat-form-field *ngIf="storageTypeId === 'AzureStorage'" class="form-field" color="accent" id="form-field-account">
+        <mat-label>Storage Account Name</mat-label>
+        <input [(ngModel)]="account" matInput>
+      </mat-form-field>
+    </div>
+
+    <div>
+      <mat-form-field *ngIf="storageTypeId === 'AzureStorage'" class="form-field" color="accent" id="form-field-container">
+        <mat-label>Container</mat-label>
+        <input disabled [(ngModel)]="container" matInput>
+      </mat-form-field>
+    </div>
+
+    <div>
+      <mat-form-field *ngIf="storageTypeId === 'AzureStorage'" class="form-field" color="accent" id="form-field-blobname">
+        <mat-label>Blob Name</mat-label>
+        <input [(ngModel)]="blobname" matInput>
+      </mat-form-field>
+    </div>
+
+    <div>
+      <mat-form-field *ngIf="storageTypeId === 'HttpData'" class="form-field" color="accent" id="form-field-baseurl">
+        <mat-label>Base Url</mat-label>
+        <input [(ngModel)]="baseUrl" matInput>
+      </mat-form-field>
+
+    <div>
+      <mat-form-field *ngIf="storageTypeId === 'Kafka'" class="form-field" color="accent" id="form-field-kafka-server">
+        <mat-label>Kafka Bootstrap Server Url</mat-label>
+        <input [(ngModel)]="kafkaServer" matInput>
+      </mat-form-field>
+
+      <mat-form-field *ngIf="storageTypeId === 'Kafka'" class="form-field" color="accent" id="form-field-kafka-topic">
+        <mat-label>Kafka Topic</mat-label>
+        <input [(ngModel)]="kafkaTopic" matInput>
+      </mat-form-field>
+    </div>
+  </div>
+
+  </div>
+
+  <div class="form-group"> 
+    <h4><h4>Additional Properties for Gaia-X Service Offering</h4></h4>
+    <mat-form-field class="form-field" color="accent" id="form-field-service-name">
+      <mat-label>Name for Service Offering</mat-label>
+      <input [(ngModel)]="gaia_service_offering_name" matInput>
+    </mat-form-field>
+  
+    <mat-form-field class="form-field" color="accent" id="form-field-service-description">
+      <mat-label>Description of Service Offering</mat-label>
+      <input [(ngModel)]="gaia_service_offering_desc" matInput>
+    </mat-form-field>
+  </div>
+
+  <div class="form-group">
+    <h4>Endpoint for Gaia-X Service Offering</h4>
+    <mat-form-field class="form-field" color="accent" id="form-field-service-endpoint">
+      <mat-label>Endpoint for Service Offering</mat-label>
+      <input [(ngModel)]="gaia_service_offering_endpoint" matInput>
+    </mat-form-field>
+
+    <mat-form-field class="form-field" color="accent" id="form-field-service-protocol">
+      <mat-label>Protocol</mat-label>
+      <input [(ngModel)]="gaia_service_offering_protocol" matInput>
+    </mat-form-field>
+
+    <mat-form-field class="form-field" color="accent" id="form-field-service-host">
+      <mat-label>Host</mat-label>
+      <input [(ngModel)]="gaia_service_offering_host" matInput>
+    </mat-form-field>
+
+    <mat-form-field class="form-field" color="accent" id="form-field-service-port">
+      <mat-label>Port</mat-label>
+      <input [(ngModel)]="gaia_service_offering_port" matInput>
+    </mat-form-field>
+  </div>
+ 
+</mat-dialog-content>
+
+
+<mat-dialog-actions>
+    <button (click)="onSave()" color="accent" mat-stroked-button>
+        <mat-icon>add_circle_outline</mat-icon> Create
+    </button>
+
+    <button color="accent" mat-dialog-close mat-stroked-button>
+        <mat-icon>cancel</mat-icon> Cancel
+    </button>
+</mat-dialog-actions>

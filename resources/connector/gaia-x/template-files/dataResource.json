@@ -1,0 +1,28 @@
+{
+  "@context": [
+    "https://www.w3.org/2018/credentials/v1",
+    "https://w3id.org/security/suites/jws-2020/v1",
+    "https://registry.lab.gaia-x.eu/development/api/trusted-shape-registry/v1/shapes/jsonld/trustframework#"
+  ],
+  "type": [
+    "VerifiableCredential"
+  ],
+  "id": "",
+  "issuer": "",
+  "issuanceDate": "",
+  "credentialSubject": {
+    "@type": "gx:DataResource",
+    "gx:name": "CES Data",
+    "gx:description": "Contains GX compliant credentials",
+    "gx:containsPII": false,
+    "gx:policy": "default: allow",
+    "gx:license": "EPL-2.0",
+    "gx:copyrightOwnedBy": "original owner",
+    "gx:producedBy": {
+      "@id": "__id of the data provider participant CS__"
+    },
+    "gx:exposedThrough": {
+      "@id": "__id of the service offering exposing this data__"
+    }
+  }
+}

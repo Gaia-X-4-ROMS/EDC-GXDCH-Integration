@@ -1,0 +1,28 @@
+{
+    "@context": [
+        "https://www.w3.org/2018/credentials/v1",
+        "https://w3id.org/security/suites/jws-2020/v1",
+        "https://registry.lab.gaia-x.eu/development/api/trusted-shape-registry/v1/shapes/jsonld/trustframework#"
+    ],
+    "credentialSubject": {
+        "gx:headquarterAddress": {
+            "gx:countrySubdivisionCode": ""
+        },
+        "gx:legalAddress": {
+            "gx:countrySubdivisionCode": ""
+        },
+        "gx:legalName": "",
+        "gx:legalRegistrationNumber": {
+            "id": ""
+        },
+        "gx-terms-and-conditions:gaiaxTermsAndConditions": "70c1d713215f95191a11d38fe2341faed27d19e083917bc8732ca4fea4976700",
+        "id": "",
+        "type": "gx:LegalParticipant"
+    },
+    "id": "",
+    "issuanceDate": "",
+    "issuer": "",
+    "type": [
+        "VerifiableCredential"
+    ]
+}

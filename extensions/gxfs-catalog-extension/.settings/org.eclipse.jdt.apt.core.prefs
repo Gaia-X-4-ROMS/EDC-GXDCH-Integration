@@ -1,0 +1,7 @@
+eclipse.preferences.version=1
+org.eclipse.jdt.apt.aptEnabled=true
+org.eclipse.jdt.apt.genSrcDir=bin/generated-sources/annotations
+org.eclipse.jdt.apt.genTestSrcDir=bin/generated-test-sources/annotations
+org.eclipse.jdt.apt.processorOptions/edc.id=org.eclipse.edc\:gxfs-catalog-extension
+org.eclipse.jdt.apt.processorOptions/edc.outputDir=C\:\\Users\\vrank\\git\\roms-edc\\extensions\\gxfs-catalog-extension\\build
+org.eclipse.jdt.apt.processorOptions/edc.version=unspecified

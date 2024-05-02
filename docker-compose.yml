@@ -1,0 +1,83 @@
+version: "3.9"
+services:
+
+  # EDC Connector
+  edc-connector:
+    container_name: connector
+    #image: timvr/edc-gaia-x:latest
+    build:
+      context: ./launchers/connector
+    volumes:
+      - type: bind
+        source: ./resources/connector/certs
+        target: /app/resources/certs
+      - type: bind
+        source: ./resources/connector/configuration
+        target: /app/resources/configuration
+      - type: bind
+        source: ./resources/connector/gaia-x
+        target: /app/resources/gaia-x
+    environment:
+      EDC_CONNECTOR_NAME: connector
+      EDC_DSP_CALLBACK_ADDRESS: http://connector:29194/api/dsp
+      EDC_PUBLIC_KEY_ALIAS: public-key
+      EDC_TRANSFER_DATAPLANE_TOKEN_SIGNER_PRIVATEKEY_ALIAS: 1
+      EDC_TRANSFER_PROXY_TOKEN_SIGNER_PRIVATEKEY_ALIAS: 1
+      EDC_TRANSFER_PROXY_TOKEN_VERIFIER_PUBLICKEY_ALIAS: public-key
+      EDC_DATAPLANE_TOKEN_VALIDATION_ENDPOINT: http://localhost:29192/control/token
+      EDC_API_AUTH_KEY: ApiKeyDefaultValue
+      EDC_RECEIVER_HTTP_ENDPOINT: http://localhost:4000/receiver/urn:connector:provider/callback #nicht aktiv, wird aber benötigt von der http-Extension
+
+      #aus EDC-Startconfig
+      EDC_KEYSTORE: /app/resources/certs/cert.pfx
+      EDC_KEYSTORE_PASSWORD: 123456
+      EDC_VAULT: /app/resources/configuration/connector-vault.properties
+      #EDC_FS_CONFIG: /app/consumer-with-listener/resources/configuration/connector-configuration.properties #nicht nötig, weil wir hier alle Parameter setzen
+
+      #Optionale Felder. Die Defaults verweisen auf die 4ROMs Services und Wege:
+      EDC_CONVERTER_FC_URL: https://fc.gaiax4roms.hotsprings.io/self-descriptions
+      EDC_CONVERTER_SD_URL: https://gaiax4roms.hotsprings.io/
+      EDC_CONVERTER_SD_AUTHORIZATION_USER: api
+
+      #Pflichtfelder für die Gaia-x-Erweiterung:
+      USER_DIR: /app #workaround - in docker we need the working-dir not the dir where the JVM was started
+      EDC_CONVERTER_CES_URL: https://ces-main.lab.gaia-x.eu/credentials-events
+      EDC_CONVERTER_NOTAR_URL: https://registrationnumber.notary.lab.gaia-x.eu/development/registrationNumberVC
+      EDC_CONVERTER_COMPLIANT_URL: https://compliance.lab.gaia-x.eu/development/api/credential-offers
+      EDC_CONVERTER_SD_AUTHORIZATION_PW: AuRbD2xmTSYECk59s7BezM
+      EDC_CONTRACT_GAIAXRESSOURCEPATH: /resources/gaia-x/
+      #Informationen über welche fürs Onboarding relevant sind "_" statt Leerzeichen verwenden (Auch Pflichtfelder wenn bereits Onboarded)
+      EDC_CONVERTER_VAT_ID: # z.B. DE216874661
+      EDC_CONVERTER_COMPANY_NAME: # z.B. TraffGo_Road_GmbH
+      EDC_CONVERTER_LOCATION: # z.B. 51.32750346871151_6.569003917123521
+      EDC_CONVERTER_COUNTRY_SUBDIVISION_CODE: # z.B. DE-NW
+      #Wenn es einen Keycloak vor dem Katalog gibt (in 4ROMs aktuell der Fall)
+      #Wenn nicht einfach die Parameter löschen:
+      EDC_CONVERTER_KEYCLOAK_URL: https://keycloak.gaiax4roms.hotsprings.io/realms/gaiax4roms/protocol/openid-connect/token
+      EDC_CONVERTER_KEYCLOAK_USERNAME: test
+      EDC_CONVERTER_KEYCLOAK_PASSWORD: test
+      EDC_CONVERTER_KEYCLOAK_CLIENT: federated-catalogue
+      EDC_CONVERTER_KEYCLOAK_CLIENT_SECRET: keycloak-secret
+      EDC_CONVERTER_KEYCLOAK_SCOPE: openid
+
+      #CORS-Paramter für's Dashboard
+      EDC_WEB_REST_CORS_ENABLED: "true"
+      EDC_WEB_REST_CORS_HEADERS: "origin,content-type,accept,authorization,x-api-key"
+    ports:
+      - "29191:29191"
+      - "29193:29193"
+      - "29194:29194"
+
+  edc-datadashboard:
+    container_name: connector-datadashboard
+    #image: timvr/edc-gaia-x:dashboard
+    build:
+      context: ./dashboard
+    volumes:
+      - ./resources/dashboard:/usr/share/nginx/html/assets/config
+    depends_on:
+      - edc-connector
+      #connector:
+        #condition: service_healthy
+    ports:
+      - "7080:80"

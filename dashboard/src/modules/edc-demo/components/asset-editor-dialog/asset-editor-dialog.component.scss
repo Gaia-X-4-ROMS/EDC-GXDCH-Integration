@@ -1,0 +1,22 @@
+mat-dialog-content {
+    width: 850px;
+}
+
+.form-field {
+    margin-right: 10px;
+    width: 350px;
+}
+
+mat-card-actions {
+    margin-left: 0;
+}
+
+.form-group {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 20px; /* optional: Abstand zwischen den Gruppen */
+  }
+
+  .form-group h4 {
+    margin-top: 0;
+  }

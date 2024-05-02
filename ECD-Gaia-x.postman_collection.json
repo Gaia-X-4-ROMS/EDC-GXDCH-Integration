@@ -1,0 +1,182 @@
+{
+	"info": {
+		"_postman_id": "bad288e7-ad5f-4fdc-8256-08c968cb1265",
+		"name": "ECD-Gaia-x",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28986228"
+	},
+	"item": [
+		{
+			"name": "Asset anlegen",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"@context\": {\r\n        \"edc\": \"https://w3id.org/edc/v0.0.1/ns/\"\r\n    },\r\n    \"asset\": {\r\n        \"@id\": {{DatenAngebotName}},\r\n        \"properties\": {\r\n            \"name\": {{DatenAngebotName}},\r\n            \"contenttype\": \"application/json\",\r\n            \"serviceOfferingName\": {{ServiceName}},\r\n            \"serviceOfferingDescription\": {{ServiceBeschreibung}},\r\n            \"description\": {{DatenAngebotsBeschreibung}},\r\n            \"endPoint\":{{Endpoint}},\r\n            \"protocol\":{{protocol}},\r\n            \"port\":{{port}},\r\n            \"host\":{{host}},\r\n            \"version\":{{version}}\r\n        }\r\n    },\r\n    \"dataAddress\": {\r\n        \"name\": \"Test asset\",\r\n        \"baseUrl\": \"https://jsonplaceholder.typicode.com/users\",\r\n        \"type\": \"HttpData\"\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:29193/management/v2/assets",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "29193",
+					"path": [
+						"management",
+						"v2",
+						"assets"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Policy",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"@context\": {\r\n        \"edc\": \"https://w3id.org/edc/v0.0.1/ns/\",\r\n        \"odrl\": \"http://www.w3.org/ns/odrl/2/\"\r\n    },\r\n    \"@id\": {{DatenAngebotName}},\r\n    \"policy\": {\r\n        \"@type\": \"set\",\r\n        \"odrl:permission\": {{Permissions}},\r\n        \"odrl:prohibition\": {{Prohibition}},\r\n        \"odrl:obligation\": {{Obligation}}\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:29193/management/v2/policydefinitions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "29193",
+					"path": [
+						"management",
+						"v2",
+						"policydefinitions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Contract",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"@context\": {\r\n        \"edc\": \"https://w3id.org/edc/v0.0.1/ns/\"\r\n    },\r\n    \"@id\": {{DatenAngebotName}},\r\n    \"accessPolicyId\": {{DatenAngebotName}},\r\n    \"contractPolicyId\":{{DatenAngebotName}},\r\n    \"assetsSelector\": {\r\n        \"@type\": \"CriterionDto\",\r\n        \"operandLeft\": \"https://w3id.org/edc/v0.0.1/ns/id\",\r\n        \"operator\": \"=\",\r\n        \"operandRight\": {{DatenAngebotName}}\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:29193/management/v2/contractdefinitions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "29193",
+					"path": [
+						"management",
+						"v2",
+						"contractdefinitions"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "ServiceName",
+			"value": "\"Name des Service\"",
+			"type": "string"
+		},
+		{
+			"key": "ServiceBeschreibung",
+			"value": "\"Beschreibung des Service\"",
+			"type": "string"
+		},
+		{
+			"key": "DatenAngebotName",
+			"value": "\"Name des Datenangebots\"",
+			"type": "string"
+		},
+		{
+			"key": "DatenAngebotsBeschreibung",
+			"value": "\"Beschreibung des Datenangebots\"",
+			"type": "string"
+		},
+		{
+			"key": "Permissions",
+			"value": "[]",
+			"type": "string"
+		},
+		{
+			"key": "Prohibition",
+			"value": "[]",
+			"type": "string"
+		},
+		{
+			"key": "Obligation",
+			"value": "[]",
+			"type": "string"
+		},
+		{
+			"key": "Endpoint",
+			"value": "\"https://smala2test.traffgoroad.com/api/swagger\"",
+			"type": "string"
+		},
+		{
+			"key": "protocol",
+			"value": "\"https\"",
+			"type": "string"
+		},
+		{
+			"key": "port",
+			"value": "\"443\"",
+			"type": "string"
+		},
+		{
+			"key": "host",
+			"value": "\"TraffGo\"",
+			"type": "string"
+		},
+		{
+			"key": "version",
+			"value": "\"1.0.0\"",
+			"type": "string"
+		}
+	]
+}
