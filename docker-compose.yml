@@ -4,9 +4,9 @@ services:
   # EDC Connector
   edc-connector:
     container_name: connector
-    #image: timvr/edc-gaia-x:latest
-    build:
-      context: ./launchers/connector
+    image: timvr/edc-gaia-x:latest
+    #build:
+      #context: ./launchers/connector
     volumes:
       - type: bind
         source: ./resources/connector/certs
@@ -70,9 +70,9 @@ services:
 
   edc-datadashboard:
     container_name: connector-datadashboard
-    #image: timvr/edc-gaia-x:dashboard
-    build:
-      context: ./dashboard
+    image: timvr/edc-gaia-x:dashboard
+    #build:
+      #context: ./dashboard
     volumes:
       - ./resources/dashboard:/usr/share/nginx/html/assets/config
     depends_on:
