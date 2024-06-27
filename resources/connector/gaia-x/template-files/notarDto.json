@@ -1,8 +1,8 @@
 {
-  "@context": [
-    "https://registry.lab.gaia-x.eu/development/api/trusted-shape-registry/development/shapes/jsonld/participant"
-  ],
-  "type": "gx:legalRegistrationNumber",
-  "id": "did:web:gaia-x.eu:legalRegistrationNumber.json",
-  "gx:vatID": "FR79537407926"
+    "@context": [
+        "https://registry.lab.gaia-x.eu/development/api/trusted-shape-registry/development/shapes/jsonld/participant"
+    ],
+    "type": "gx:legalRegistrationNumber",
+    "id": "did:web:gaia-x.eu:legalRegistrationNumber.json",
+    "gx:vatID": "FR79537407926"
 }

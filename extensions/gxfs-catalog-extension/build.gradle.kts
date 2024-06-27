@@ -18,7 +18,9 @@ plugins {
 }
 
 dependencies {
-    api(libs.edc.control.plane.spi)
+   // api(libs.edc.control.plane.spi)
+    api(libs.edc.contract.spi)
+    api(libs.edc.asset.spi)
     implementation(libs.edc.http)
 	implementation("com.googlecode.json-simple:json-simple:1.1")
 	implementation("org.apache.httpcomponents:httpclient:4.5")

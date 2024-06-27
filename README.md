@@ -1,8 +1,8 @@
-# EDC Integration to Create and Distribute Gaia-X Compliance Credentials via GXDCH
+# Sample Extension listening for contract creation (final step of asset creation)
 
 ## 0. Known Issues
 - When no Credentials are presend in the /identity/hostspring folder the EDC will create new ones. If another EDC already created credentials they will all be marked as depricated by the new one
-- The Katalog currently can only contain one VP at a time. When one changes to a new Service Offering a new VP will be created for that, depricating the previous one.
+- The Katalog currently can only contain one VP at a time. When one changes the Service Offering a new VP will be created for that, depricating the previous one.
 
 ## 1. Prepare Information
 ### b&#41; Adjust the resources-files

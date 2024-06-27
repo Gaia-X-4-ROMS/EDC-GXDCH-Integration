@@ -9,16 +9,25 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 })
 export class NewPolicyDialogComponent implements OnInit {
   editMode: boolean = false;
-  policy: PolicyInput = {
-    "@type": "set"
+  //policy: PolicyInput = {
+  policy = {
+    "@type": "set",
+    "permission": [],
+    "prohibition": [],
+    "obligation": [],
+    "@context": '',
+    "assignee": '',
+    "assigner": ''
   };
-  policyDefinition: PolicyDefinitionInput = {
+  //policyDefinition: PolicyDefinitionInput = {
+  policyDefinition = {
     "policy": this.policy,
-    "@id": ''
+    "@id": '',
+    "id": ''
   };
-  permissionsJson: string = '';
-  prohibitionsJson: string = '';
-  obligationsJson: string = '';
+  permissionsJson: string = '[]';
+  prohibitionsJson: string = '[]';
+  obligationsJson: string = '[]';
 
   constructor(private dialogRef: MatDialogRef<NewPolicyDialogComponent>) {
   }
@@ -28,20 +37,19 @@ export class NewPolicyDialogComponent implements OnInit {
   }
 
   onSave() {
-    if (this.permissionsJson && this.permissionsJson !== '') {
+    if (this.permissionsJson && this.permissionsJson !== '[]') {
       this.policy.permission = JSON.parse(this.permissionsJson);
     }
 
-    if (this.prohibitionsJson && this.prohibitionsJson !== '') {
+    if (this.prohibitionsJson && this.prohibitionsJson !== '[]') {
       this.policy.prohibition = JSON.parse(this.prohibitionsJson);
     }
 
-    if (this.obligationsJson && this.obligationsJson !== '') {
+    if (this.obligationsJson && this.obligationsJson !== '[]') {
       this.policy.obligation = JSON.parse(this.obligationsJson);
     }
 
-    this.policy["@context"]="http://www.w3.org/ns/odrl.jsonld"
-
+    this.policy["@context"]="http://www.w3.org/ns/odrl.jsonld";
 
     this.dialogRef.close({
 

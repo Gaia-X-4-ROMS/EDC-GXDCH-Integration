@@ -19,7 +19,7 @@ dependencies {
 
     implementation(libs.edc.data.plane.selector.api)
     implementation(libs.edc.data.plane.selector.core)
-    implementation(libs.edc.data.plane.selector.client)
+   // implementation(libs.edc.data.plane.selector.client)
 
     implementation(libs.edc.data.plane.api)
     implementation(libs.edc.data.plane.core)

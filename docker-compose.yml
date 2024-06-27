@@ -42,15 +42,15 @@ services:
       #Pflichtfelder für die Gaia-x-Erweiterung:
       USER_DIR: /app #workaround - in docker we need the working-dir not the dir where the JVM was started
       EDC_CONVERTER_CES_URL: https://ces-main.lab.gaia-x.eu/credentials-events
-      EDC_CONVERTER_NOTAR_URL: https://registrationnumber.notary.lab.gaia-x.eu/development/registrationNumberVC
-      EDC_CONVERTER_COMPLIANT_URL: https://compliance.lab.gaia-x.eu/development/api/credential-offers
+      EDC_CONVERTER_NOTAR_URL: https://registrationnumber.notary.lab.gaia-x.eu/v1-staging/registrationNumberVC
+      EDC_CONVERTER_COMPLIANT_URL: https://compliance.lab.gaia-x.eu/v1-staging/api/credential-offers
       EDC_CONVERTER_SD_AUTHORIZATION_PW: AuRbD2xmTSYECk59s7BezM
       EDC_CONTRACT_GAIAXRESSOURCEPATH: /resources/gaia-x/
       #Informationen über welche fürs Onboarding relevant sind "_" statt Leerzeichen verwenden (Auch Pflichtfelder wenn bereits Onboarded)
-      EDC_CONVERTER_VAT_ID: # z.B. DE216874661
-      EDC_CONVERTER_COMPANY_NAME: # z.B. TraffGo_Road_GmbH
-      EDC_CONVERTER_LOCATION: # z.B. 51.32750346871151_6.569003917123521
-      EDC_CONVERTER_COUNTRY_SUBDIVISION_CODE: # z.B. DE-NW
+      EDC_CONVERTER_VAT_ID: # eg. DE124904070
+      EDC_CONVERTER_COMPANY_NAME: # eg. Materna_SE
+      EDC_CONVERTER_LOCATION: # eg. 51.50531700844637_7.493938768105928
+      EDC_CONVERTER_COUNTRY_SUBDIVISION_CODE: # eg. DE-NW
       #Wenn es einen Keycloak vor dem Katalog gibt (in 4ROMs aktuell der Fall)
       #Wenn nicht einfach die Parameter löschen:
       EDC_CONVERTER_KEYCLOAK_URL: https://keycloak.gaiax4roms.hotsprings.io/realms/gaiax4roms/protocol/openid-connect/token

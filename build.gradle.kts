@@ -35,7 +35,7 @@ allprojects {
     // configure which version of the annotation processor to use. defaults to the same version as the plugin
     configure<org.eclipse.edc.plugins.autodoc.AutodocExtension> {
         processorVersion.set(edcVersion)
-        outputDirectory.set(project.buildDir)
+        outputDirectory.set(project.layout.buildDirectory.get().asFile) // project.buildDir)
     }
 
     configure<org.eclipse.edc.plugins.edcbuild.extensions.BuildExtension> {
@@ -52,9 +52,9 @@ allprojects {
     }
 
     // EdcRuntimeExtension uses this to determine the runtime classpath of the module to run.
-    tasks.register("printClasspath") {
+  /*  tasks.register("printClasspath") {
         doLast {
             println(sourceSets["main"].runtimeClasspath.asPath)
         }
-    }
+    }*/
 }

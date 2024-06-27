@@ -6,7 +6,7 @@ import {
   ContractDefinitionEditorDialog
 } from '../contract-definition-editor-dialog/contract-definition-editor-dialog.component';
 import { ContractDefinitionService } from "../../../mgmt-api-client";
-import { ContractDefinitionV031Service } from '../../services/contractDefinition-v0-3-1.service';
+import { ContractDefinitionV062Service } from '../../services/contractDefinition-v0-6-2.service';
 import {ConfirmationDialogComponent, ConfirmDialogModel} from "../confirmation-dialog/confirmation-dialog.component";
 import {NotificationService} from "../../services/notification.service";
 import { ContractDefinitionInput, ContractDefinition } from "../../../mgmt-api-client/model"
@@ -24,7 +24,7 @@ export class ContractDefinitionViewerComponent implements OnInit {
   private fetch$ = new BehaviorSubject(null);
 
   constructor(private contractDefinitionService: ContractDefinitionService,
-              private contractDefinitionServiceV031: ContractDefinitionV031Service,
+              private contractDefinitionServiceV062: ContractDefinitionV062Service,
               private notificationService: NotificationService,
               private readonly dialog: MatDialog) {
   }
@@ -64,7 +64,7 @@ export class ContractDefinitionViewerComponent implements OnInit {
     dialogRef.afterClosed().pipe(first()).subscribe((result: { contractDefinition?: ContractDefinitionInput }) => {
       const newContractDefinition = result?.contractDefinition;
       if (newContractDefinition) {
-        this.contractDefinitionServiceV031.createContractDefinition(newContractDefinition)
+        this.contractDefinitionServiceV062.createContractDefinition(newContractDefinition)
        // this.contractDefinitionService.createContractDefinition(newContractDefinition)
           .subscribe({
               next: () => this.fetch$.next(null),

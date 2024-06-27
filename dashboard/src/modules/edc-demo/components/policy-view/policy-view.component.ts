@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {PolicyService} from "../../../mgmt-api-client";
-import {PolicyV031Service} from "../../services/policy-v0-3-1.service";
+import {PolicyV062Service} from "../../services/policy-v0-6-2.service";
 import {BehaviorSubject, Observable, Observer, of} from "rxjs";
 import {first, map, switchMap} from "rxjs/operators";
 import {MatDialog} from "@angular/material/dialog";
@@ -24,7 +24,7 @@ export class PolicyViewComponent implements OnInit {
   constructor(private policyService: PolicyService,
               private notificationService: NotificationService,
               private readonly dialog: MatDialog,
-              private policyV031Service: PolicyV031Service) {
+              private policyV062Service: PolicyV062Service) {
 
     this.errorOrUpdateSubscriber = {
       next: x => this.fetch$.next(null),
@@ -55,7 +55,7 @@ export class PolicyViewComponent implements OnInit {
     const dialogRef = this.dialog.open(NewPolicyDialogComponent);
     dialogRef.afterClosed().pipe(first()).subscribe({ next: (newPolicyDefinition: PolicyDefinitionInput) => {
         if (newPolicyDefinition) {
-          this.policyV031Service.createPolicy(newPolicyDefinition).subscribe(
+          this.policyV062Service.createPolicy(newPolicyDefinition).subscribe(
             {
               next: (response: IdResponse) => this.errorOrUpdateSubscriber.next(response),
               error: (error: Error) => this.showError(error, "An error occurred while creating the policy.")

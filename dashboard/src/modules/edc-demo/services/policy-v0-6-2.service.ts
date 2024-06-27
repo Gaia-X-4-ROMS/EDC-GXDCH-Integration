@@ -9,7 +9,7 @@ import {PolicyDefinition, PolicyDefinitionInput, IdResponse} from "../../mgmt-ap
 @Injectable({
   providedIn: 'root'
 })
-export class PolicyV031Service {
+export class PolicyV062Service {
 
     constructor(
         private httpClient: HttpClient,
@@ -28,7 +28,8 @@ export class PolicyV031Service {
             },
             "@id": policyDefinition['@id'], 
             "policy": {
-                "@type": "set",
+                "@context": policyDefinition.policy['@context'],
+                "@type": "Set",
                 "odrl:permission": policyDefinition.policy.permission,
                 "odrl:prohibition": policyDefinition.policy.prohibition,
                 "odrl:obligation": policyDefinition.policy.obligation

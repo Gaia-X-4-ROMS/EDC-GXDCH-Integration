@@ -7,7 +7,7 @@ import {EMPTY, Observable} from 'rxjs';
 @Injectable({
     providedIn: 'root'
 })
-export class ContractDefinitionV031Service {
+export class ContractDefinitionV062Service {
 
     constructor(
         private httpClient: HttpClient,
