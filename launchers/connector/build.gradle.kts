@@ -6,7 +6,8 @@ plugins {
 
 dependencies {
 
-    implementation(libs.edc.control.plane.api.client)
+
+   implementation(libs.edc.control.plane.api.client)
     implementation(libs.edc.control.plane.core)
     implementation(libs.edc.control.plane.api.client)
     implementation(libs.edc.dsp)
@@ -19,11 +20,12 @@ dependencies {
 
     implementation(libs.edc.data.plane.selector.api)
     implementation(libs.edc.data.plane.selector.core)
-   // implementation(libs.edc.data.plane.selector.client)
 
     implementation(libs.edc.data.plane.api)
     implementation(libs.edc.data.plane.core)
     implementation(libs.edc.data.plane.http)
+
+   implementation(libs.edc.data.plane.kafka)
 
     implementation(project(":extensions:gxfs-catalog-extension"))
 }

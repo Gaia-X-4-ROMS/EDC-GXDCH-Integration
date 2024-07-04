@@ -27,6 +27,17 @@ services:
       EDC_DATAPLANE_TOKEN_VALIDATION_ENDPOINT: http://localhost:29192/control/token
       EDC_API_AUTH_KEY: ApiKeyDefaultValue
       EDC_RECEIVER_HTTP_ENDPOINT: http://localhost:4000/receiver/urn:connector:provider/callback #nicht aktiv, wird aber benötigt von der http-Extension
+      WEB_HTTP_PORT: 29191
+      WEB_HTTP_PATH: /api
+      WEB_HTTP_MANAGEMENT_PORT: 29193
+      WEB_HTTP_MANAGEMENT_PATH: /management
+      WEB_HTTP_PROTOCOL_PORT: 29194
+      WEB_HTTP_PROTOCOL_PATH: /protocol
+      WEB_HTTP_PUBLIC_PORT: 29291
+      WEB_HTTP_PUBLIC_PATH: /public
+      WEB_HTTP_CONTROL_PORT: 29192
+      WEB_HTTP_CONTROL_PATH: /control
+      EDC_DATAPLANE_API_PUBLIC_BASEURL: http://localhost:29291/public
 
       #aus EDC-Startconfig
       EDC_KEYSTORE: /app/resources/certs/cert.pfx
@@ -47,10 +58,10 @@ services:
       EDC_CONVERTER_SD_AUTHORIZATION_PW: AuRbD2xmTSYECk59s7BezM
       EDC_CONTRACT_GAIAXRESSOURCEPATH: /resources/gaia-x/
       #Informationen über welche fürs Onboarding relevant sind "_" statt Leerzeichen verwenden (Auch Pflichtfelder wenn bereits Onboarded)
-      EDC_CONVERTER_VAT_ID: # eg. DE124904070
-      EDC_CONVERTER_COMPANY_NAME: # eg. Materna_SE
-      EDC_CONVERTER_LOCATION: # eg. 51.50531700844637_7.493938768105928
-      EDC_CONVERTER_COUNTRY_SUBDIVISION_CODE: # eg. DE-NW
+      EDC_CONVERTER_VAT_ID: # z.B: DE216874661
+      EDC_CONVERTER_COMPANY_NAME: # z.B: TraffGo_Road_GmbH
+      EDC_CONVERTER_LOCATION: # z.B: 51.32750346871151_6.569003917123521
+      EDC_CONVERTER_COUNTRY_SUBDIVISION_CODE: # z.B: DE-NW
       #Wenn es einen Keycloak vor dem Katalog gibt (in 4ROMs aktuell der Fall)
       #Wenn nicht einfach die Parameter löschen:
       EDC_CONVERTER_KEYCLOAK_URL: https://keycloak.gaiax4roms.hotsprings.io/realms/gaiax4roms/protocol/openid-connect/token
