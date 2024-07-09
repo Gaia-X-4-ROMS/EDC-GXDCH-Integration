@@ -1,6 +1,7 @@
 # Sample Extension listening for contract creation (final step of asset creation)
 
 ## 0. Known Issues
+- The Extention is currently running on version 0.6.2. To the best of our knowlege there are no breaking changes to the current version 0.7.1
 - When no Credentials are presend in the /identity/hostspring folder the EDC will create new ones. If another EDC already created credentials they will all be marked as depricated by the new one
 - The Katalog currently can only contain one VP at a time. When one changes the Service Offering a new VP will be created for that, depricating the previous one.
 
