@@ -1,0 +1,60 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "connector.fullname" . }}-appconfigmap
+  labels:
+    {{- include "connector.labels" . | nindent 4 }}
+data:
+  connector-configuration.properties: |
+    edc.participant.id=consumer
+
+    edc.dsp.callback.address=http://localhost:29194/protocol
+    web.http.port=29191
+    web.http.path=/api
+    web.http.management.port=29193
+    web.http.management.path=/management
+    web.http.protocol.port=29194
+    web.http.protocol.path=/protocol
+
+    edc.receiver.http.endpoint=http://localhost:4000/receiver/urn:connector:provider/callback
+
+    edc.public.key.alias=public-key
+    edc.transfer.dataplane.token.signer.privatekey.alias=1
+    edc.transfer.proxy.token.signer.privatekey.alias=1
+    edc.transfer.proxy.token.verifier.publickey.alias=public-key
+
+    web.http.public.port=29291
+    web.http.public.path=/public
+
+    web.http.control.port=29192
+    web.http.control.path=/control
+    edc.dataplane.token.validation.endpoint=http://localhost:29192/control/token
+
+    #Optionale felder. Die Defaults verweisen auf die 4ROMs services und wege:
+    edc.converter.fc.url=https://fc.gaiax4roms.hotsprings.io/self-descriptions
+    edc.converter.sd.url=https://gaiax4roms.hotsprings.io/
+    edc.converter.sd.authorization.user=api
+
+    #Pflichtfelder für die Gaia-x erweiterung:
+    edc.converter.ces.url=https://ces-main.lab.gaia-x.eu/credentials-events
+    edc.converter.notar.url=https://registrationnumber.notary.lab.gaia-x.eu/v1-staging/registrationNumberVC
+    edc.converter.compliant.url=https://compliance.lab.gaia-x.eu/v1-staging/api/credential-offers?vcid=https%3A%2F%2Fstorage.gaia-x.eu%2Fcredential-offers%2Fb3e0a068-4bf8-4796-932e-2fa83043e203
+    edc.converter.sd.authorization.pw=AuRbD2xmTSYECk59s7BezM
+    edc.contract.gaiaxressourcepath=/resources/connector/gaia-x/
+
+    #Informationen über welche fürs Onboarding relevant sind "_" statt Leerzeichen verwenden (Auch Pflichtfelder wenn bereits Onboarded)
+    edc.converter.vat.id=DE811258273
+    edc.converter.company.name=Technische_Universitaet_Dortmund
+    edc.converter.location=51.4842558_7.4148775
+    edc.converter.country.subdivision.code=DE-NW
+
+    #Wenn es einen Keycloak vor dem Katalog gibt (in 4ROMs aktuell der Fall)
+    #Wenn nicht einfach die Parameter löschen:
+    edc.converter.keycloak.url=https://keycloak.gaiax4roms.hotsprings.io/realms/gaiax4roms/protocol/openid-connect/token
+    edc.converter.keycloak.username=test
+    edc.converter.keycloak.password=test
+    edc.converter.keycloak.client=federated-catalogue
+    edc.converter.keycloak.client.secret=keycloak-secret
+    edc.converter.keycloak.scope=openid
+  connector-vault.properties: |
+    public-key=-----BEGIN CERTIFICATE-----\r\nMIIDazCCAlOgAwIBAgIUZ3/sZXYzW4PjmOXKrZn6WBmUJ+4wDQYJKoZIhvcNAQEL\r\nBQAwRTELMAkGA1UEBhMCQVUxEzARBgNVBAgMClNvbWUtU3RhdGUxITAfBgNVBAoM\r\nGEludGVybmV0IFdpZGdpdHMgUHR5IEx0ZDAeFw0yMjAyMjMxNTA2MDNaFw0zMjAy\r\nMjExNTA2MDNaMEUxCzAJBgNVBAYTAkFVMRMwEQYDVQQIDApTb21lLVN0YXRlMSEw\r\nHwYDVQQKDBhJbnRlcm5ldCBXaWRnaXRzIFB0eSBMdGQwggEiMA0GCSqGSIb3DQEB\r\nAQUAA4IBDwAwggEKAoIBAQDBl6XaJnXTL+6DWip3aBhU+MzmY4d1V9hbTm1tiZ3g\r\nE0VbUrvGO3LoYaxpPv6zFmsg3uJv6JxVAde7EddidN0ITHB9cQNdAfdUJ5njmsGS\r\nPbdQuOQTHw0aG7/QvTI/nsvfEE6e0lbV/0e7DHacZT/+OztBH1RwkG2ymM94Hf8H\r\nI6x7q6yfRTAZOqeOMrPCYTcluAgE9NskoPvjX5qASakBtXISKIsOU84N0/2HDN3W\r\nEGMXvoHUQu6vrij6BwiwxKaw1AKwWENKoga775bPXN3M+JTSaIKE7dZbKzvx0Zi0\r\nh5X+bxc3BJi3Z/CsUBCzE+Y0SFetOiYmyl/2YmnneYoVAgMBAAGjUzBRMB0GA1Ud\r\nDgQWBBTvK1wVERwjni4B2vdH7KtEJeVWFzAfBgNVHSMEGDAWgBTvK1wVERwjni4B\r\n2vdH7KtEJeVWFzAPBgNVHRMBAf8EBTADAQH/MA0GCSqGSIb3DQEBCwUAA4IBAQBn\r\nQHiPA7OBYukHd9gS7c0HXE+fsWcS3GZeLqcHfQQnV3pte1vTmu9//IVW71wNCJ1/\r\nrySRyODPQoPehxEcyHwupNZSzXK//nPlTdSgjMfFxscvt1YndyQLQYCfyOJMixAe\r\nAqrb14GTFHUUrdor0PyElhkULjkOXUrSIsdBrfWrwLTkelE8NK3tb5ZG8KPzD9Jy\r\n+NwEPPr9d+iHkUkM7EFWw/cl56wka9ryBb97RI7DqbO6/j6OXHMk4GByxKv7DSIR\r\nIvF9/Dw20qytajtaHV0pluFcOBuFc0NfiDvCaQlbTsfjzbc6UmZWbOi9YOJl3VQ/\r\ng3h+15GuzbsSzOCOEYOT\r\n-----END CERTIFICATE-----

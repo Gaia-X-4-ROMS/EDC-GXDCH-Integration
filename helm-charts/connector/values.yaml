@@ -1,0 +1,253 @@
+# Default values for connector.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: timvr/edc-gaia-x
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "latest"
+
+initContainer:
+  fetchUrl: "https://tu-dortmund.sciebo.de/s/8qlLSG3gUak0obG/download"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Automatically mount a ServiceAccount's API credentials?
+  automount: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  http:
+    port: 19191
+    path: /api
+  management:
+    port: 19193
+    path: /management
+  protocol:
+    port: 19194
+    path: /protocol
+  public:
+    port: 19291
+    path: /public
+  control:
+    port: 19192
+    path: /control
+  edc:
+    idsid: urn:connector:provider
+    id: provider
+    publicKeyAlias: public-key
+    transferDataplaneTokenSignerPrivateKeyAlias: 1
+    transferProxyTokenSignerPrivateKeyAlias: 1
+    transferProxyTokenVerifierPrivateKeyAlias: 1
+    apiAuthKey: ApiKeyDefaultValue
+    keystore: 
+      path: /app/resources/certs/cert.pfx
+      password: 123456
+      vault: /app/resources/configuration/connector-vault.properties
+    converter:
+      federatedCatalog: https://fc.gaiax4roms.hotsprings.io/self-descriptions
+      selfDescription: https://gaiax4roms.hotsprings.io/
+      selfDescriptionAuthorizationUser: api
+      selfDescriptionAuthorizationPassword: AuRbD2xmTSYECk59s7BezM
+      ces: https://ces-main.lab.gaia-x.eu/credentials-events
+      notar: https://registrationnumber.notary.lab.gaia-x.eu/v1-staging/registrationNumberVC
+      compliance: https://compliance.lab.gaia-x.eu/v1-staging/api/credential-offers
+      keycloak: 
+        url: https://keycloak.gaiax4roms.hotsprings.io/realms/gaiax4roms/protocol/openid-connect/token
+        username: test
+        password: test
+        client: federated-catalogue
+        clientSecret: keycloak-secret
+        scope: openid
+    company:
+      vatId: DE811258273
+      name: Technische_Universitaet_Dortmund
+      location: 51.4842558_7.4148775
+      countrySubdivisionCode: DE-NW
+    contract:
+      gaiaxResourcePath: /resources/gaia-x/
+    callback:
+      dsp: http://provider.gaiax.cluster.tsachweh.de/protocol
+      tokenValidation: http://provider.gaiax.cluster.tsachweh.de/control/token
+      httpReceiverEndpoint: http://localhost:4000/receiver/urn:connector:provider/callback
+      public: http://provider.gaiax.cluster.tsachweh.de/public
+    web:
+      cors:
+        enabled: false
+        headers: origin,content-type,accept,authorization,x-api-key
+  userDir: /app
+  certs:
+    certPem: |
+      LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURhekNDQWxPZ0F3SUJBZ0lVWjMvc1pYWXpX
+      NFBqbU9YS3JabjZXQm1VSis0d0RRWUpLb1pJaHZjTkFRRUwKQlFBd1JURUxNQWtHQTFVRUJoTUNR
+      VlV4RXpBUkJnTlZCQWdNQ2xOdmJXVXRVM1JoZEdVeElUQWZCZ05WQkFvTQpHRWx1ZEdWeWJtVjBJ
+      RmRwWkdkcGRITWdVSFI1SUV4MFpEQWVGdzB5TWpBeU1qTXhOVEEyTUROYUZ3MHpNakF5Ck1qRXhO
+      VEEyTUROYU1FVXhDekFKQmdOVkJBWVRBa0ZWTVJNd0VRWURWUVFJREFwVGIyMWxMVk4wWVhSbE1T
+      RXcKSHdZRFZRUUtEQmhKYm5SbGNtNWxkQ0JYYVdSbmFYUnpJRkIwZVNCTWRHUXdnZ0VpTUEwR0NT
+      cUdTSWIzRFFFQgpBUVVBQTRJQkR3QXdnZ0VLQW9JQkFRREJsNlhhSm5YVEwrNkRXaXAzYUJoVStN
+      em1ZNGQxVjloYlRtMXRpWjNnCkUwVmJVcnZHTzNMb1lheHBQdjZ6Rm1zZzN1SnY2SnhWQWRlN0Vk
+      ZGlkTjBJVEhCOWNRTmRBZmRVSjVuam1zR1MKUGJkUXVPUVRIdzBhRzcvUXZUSS9uc3ZmRUU2ZTBs
+      YlYvMGU3REhhY1pULytPenRCSDFSd2tHMnltTTk0SGY4SApJNng3cTZ5ZlJUQVpPcWVPTXJQQ1lU
+      Y2x1QWdFOU5za29QdmpYNXFBU2FrQnRYSVNLSXNPVTg0TjAvMkhETjNXCkVHTVh2b0hVUXU2dnJp
+      ajZCd2l3eEthdzFBS3dXRU5Lb2dhNzc1YlBYTjNNK0pUU2FJS0U3ZFpiS3p2eDBaaTAKaDVYK2J4
+      YzNCSmkzWi9Dc1VCQ3pFK1kwU0ZldE9pWW15bC8yWW1ubmVZb1ZBZ01CQUFHalV6QlJNQjBHQTFV
+      ZApEZ1FXQkJUdksxd1ZFUndqbmk0QjJ2ZEg3S3RFSmVWV0Z6QWZCZ05WSFNNRUdEQVdnQlR2SzF3
+      VkVSd2puaTRCCjJ2ZEg3S3RFSmVWV0Z6QVBCZ05WSFJNQkFmOEVCVEFEQVFIL01BMEdDU3FHU0li
+      M0RRRUJDd1VBQTRJQkFRQm4KUUhpUEE3T0JZdWtIZDlnUzdjMEhYRStmc1djUzNHWmVMcWNIZlFR
+      blYzcHRlMXZUbXU5Ly9JVlc3MXdOQ0oxLwpyeVNSeU9EUFFvUGVoeEVjeUh3dXBOWlN6WEsvL25Q
+      bFRkU2dqTWZGeHNjdnQxWW5keVFMUVlDZnlPSk1peEFlCkFxcmIxNEdURkhVVXJkb3IwUHlFbGhr
+      VUxqa09YVXJTSXNkQnJmV3J3TFRrZWxFOE5LM3RiNVpHOEtQekQ5SnkKK053RVBQcjlkK2lIa1Vr
+      TTdFRld3L2NsNTZ3a2E5cnlCYjk3Ukk3RHFiTzYvajZPWEhNazRHQnl4S3Y3RFNJUgpJdkY5L0R3
+      MjBxeXRhanRhSFYwcGx1RmNPQnVGYzBOZmlEdkNhUWxiVHNmanpiYzZVbVpXYk9pOVlPSmwzVlEv
+      CmczaCsxNUd1emJzU3pPQ09FWU9UCi0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
+    certPfx: |
+      MIIJqQIBAzCCCW8GCSqGSIb3DQEHAaCCCWAEgglcMIIJWDCCBA8GCSqGSIb3DQEHBqCCBAAwggP8
+      AgEAMIID9QYJKoZIhvcNAQcBMBwGCiqGSIb3DQEMAQYwDgQIDIYm1DXWO6oCAggAgIIDyLSA5l4f
+      oI9Z1RWi1bx0tPCqN3SYfUMammQW6hYAbOoGCsGHN5hyPplEklCcFYuptva5WUvgRQmig6NENiGF
+      2MGYR5Y9nxp3f0JR737uAIsnJeFLrXMGvUx43CxmdC7pPkgiNBCW/ams6JcoRpSEmes0+jhoj3vE
+      AfiED1lE+SSQD1AOS3GT88o/Lq5FhWMbp/d5NIf+0ST7nr6CxRNpUlplp1Hg7R4k07MmBQMoIYDJ
+      Ah0IiYrJ8WJ/wOUvgefwoCeKGnGzisayJAaMx2d42bqBTY6ZyY49L0Iz1oFrI4Mb3tIPN4/+xKwB
+      qIQG73diRDDC5e9JR+9k8IZvFSDQBhvJYT/gBQpmEY8xO+ZAndXY/UPHx2+RUAhWdmgSTRcTxA0n
+      97gLx1U8OYZfENEf9fBbwQ+yImnyLrHAioFYDXkhTg0nEW1nGW9tLGvi1NENfyNTxEcez8388bit
+      rNCKAyGw16e7hP+0M4POhsY26yU62l2YfJrDtQnlJSuSMt+VUTzYVsQ+K5DyH4WwwUsRRteBQY10
+      BZAbs4Tdv5LE+b72uq3/MG5pfEmMdaAc1ZB+VQ9ALlMrOOTn1USXT4YPJjV/gmzHBABerh1MHIQ2
+      KZ/nY3UN2RKN9K3iuzBKMQJZT9J8kynkW+WQ89YkdVL+FRUAO3jITryVSalaz3Z/TdlEhA2wQfvz
+      uPWe8l4NVgZvOt40nQHK4C88vJDqKsGXWGI7GwIjTrRuLsc531GUF2nPrRg5Gcyk378IOIOHBPrO
+      9idCqAr3+3QV1MDDiNgOBaA/xASbgngHFu1uIeuyU7OUbBMR/VJ6APZ0WYgLdYyV6n4ERG9mIfjl
+      dBoDHPP52xxVopx9cF662kHH2p1X8wmeuDVtIrdEr5+Tyki3LZ+Ui7yPtKmDgq8YMDDDfA3wXGF5
+      ovBGLao2gEjO7s2bpBiftGX3LXYrELpTGu+hGYo/er/GIPDD7k7OwPOE//kjVB2fam3MQOtTnTNW
+      qJm9muAmM2/3x0ahg4LVVhoml55Fl85QqU2Mfcp0t8jQlWroYCBFkudbe4Hkcc6YjwOXKW8RXRXd
+      6QPoqx7Mfm8cSEII1NAVZGwPn7RwAoigq2xWAvyKBUjyZgc22T1EpYA4y45FU10mr1wLW30NLiCI
+      A4aCZheK3fa8ZSHuo8vgeySCe/0v8Bqnen7VSlAu4+bm3sGKu3PXjA+CtJ8hy/ZDS2e4rxv4KZYs
+      Num2PvpAq5O7p0VX9bTc0aLKcuW6TtwYNp70Z8D575gY6QhE0cv32bNg8Bl4H8GMy+GsMIIFQQYJ
+      KoZIhvcNAQcBoIIFMgSCBS4wggUqMIIFJgYLKoZIhvcNAQwKAQKgggTuMIIE6jAcBgoqhkiG9w0B
+      DAEDMA4ECNlQDI8D6fywAgIIAASCBMjDanXoACM1wtykGTogs5A2cxOnKHAyasxUx9WAa9HXkBke
+      BxFgFQR7h4c1dOExAV5Ea0wwdA393suBsUGd/FZxQu2FtzH+CugY7PiPwvB8vF7mRsyJWbcC3DFN
+      gjTaY58XbXXAqfqaIBneFBIaugLbDo2bWbWOaLvxhH28ba6q/Yh8M1rAh8kjASqc5hQup+nKv5vs
+      9rkx0hioVs5EwdeloU+C8KyaNOUA5VMqM23Do0DmOlk9e0ugEsFxt/04dOWm7bEjChPnCjurNM3F
+      8Dw+tdvn/iAsUPb0MuvPIbU0+KhR/DWUUFbslK4ZWxI48lQBcLsZGXuuCiMFsP4YxVL5OZHkSViN
+      YxMUAJx9lOvkd/g6oQwTVXQS564ezaEbIzs0rhpnlqNY88vFUlRz283IzkI+E3OLkCGgwBsem18P
+      7T8h5aqrCCyvBdZna4C8lhM1CzAWOkTMjhJTIrGv1SsIz+cCWgprEqkBdq7zUhqU7ijMM0L4vEEr
+      Iq4uKxBmTJywZcFWAhXkn8zp8LTur36ahvu5qPFjIWASM6KJ0fx+T2delKsGjI8fr/cUE3nkyWbn
+      rviUO0xkElG33oM5IiAtpnC0F3ZfA+kFuo3Z2KoLX4yZrdp9wsEhDdF/cNpXtl7kFElAo6IbDq5+
+      DZCwkyqD+SyZmHLX9FuIBrOI2niwivWlPv8DkANKeyHlDdoFipwTMBMXn3v8ljd7oqnXe8tkLGPW
+      uu+0yQFxD7cYMAnePOagAK4WPy7LIRXh6Wp3ur9PDXJeUX2p3+INooLfM2aXqNwC1bp7ZpLbeWWF
+      EZP2baQ+cFTqGUuO5Fr3PJEM2S9yYC9fUPJLGaUFudx4OZhGDKas1TOGKahLKHpiVG3HPAlWGINR
+      CkDQ6i0C234MU+CgLwXq803MUR//paxqCLPgTeTnt0K5ul689NIvX4jWy/UdMO+tjc1gJy2t50it
+      A1gRjefpSKHe/ap3jNmTDzpHvMo5HzfP/Omt1AbJeKn/WprTIy1pXmC0BJadM3edh6C0pLrl7p0B
+      XZkGbNPaMJQJSwz4bB+XRmT577nP03uNl2kwEiG+VsWCuFBZlVYioN2cn9qJp14zYSaLfBBJrP3s
+      KQ4zl+1TnbW+kR4t19VF4KynqBlUoaMJNLyuEZkFcTTi6YkqPoNLQbwdyghuN35cdvUlWKBZ9bl9
+      DPNGhfQp+JXg8bABi+AqZPx1L0Jbv+DvAebazoftUX0C3m/kJ4lWEFhL/Sv+LSglilvsyMJx6Nrr
+      niB10o9fv/3cmsToHspJijQIc07seXoOsHkTy/mtT3xT4G8DknMb0gY+05ZzO/Oh3tRDs/qdU2im
+      CdU9fYYtmmClw4NwySa7HDDEZFv07a2zf8TWrINpoFQUIktK565DicT1Xva6REz3vBlrx3YjtNmn
+      oqPgNQpgwy86ZxUdrvQNq7DDePqC7yWqMnp5ibNGq+HlvzZxGFfePyiqVbmvP+Grf1tJ4AVWR/Py
+      Fpp3jcSer4btzJ+vnH2ecRavsaemmYWUW2lZ+CiX0IEZSbc22Cv904BuLJJZKct2gyDBmUFV4ebi
+      FsnRh/2mRg40upFtvjkgzhFVAkyP+UKFOyyy93ZFF26EohrKOQBLdAOoQOWIs0xefAUxJTAjBgkq
+      hkiG9w0BCRUxFgQUnwd4oK5POz8oxOgRllrhZmk/FZ4wMTAhMAkGBSsOAwIaBQAEFM+6ghcO6hFW
+      xnSOwXhiPoVwx9VyBAj646iulIL+vAICCAA=
+    keyPem: |
+      LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUV2Z0lCQURBTkJna3Foa2lHOXcwQkFRRUZB
+      QVNDQktnd2dnU2tBZ0VBQW9JQkFRREJsNlhhSm5YVEwrNkQKV2lwM2FCaFUrTXptWTRkMVY5aGJU
+      bTF0aVozZ0UwVmJVcnZHTzNMb1lheHBQdjZ6Rm1zZzN1SnY2SnhWQWRlNwpFZGRpZE4wSVRIQjlj
+      UU5kQWZkVUo1bmptc0dTUGJkUXVPUVRIdzBhRzcvUXZUSS9uc3ZmRUU2ZTBsYlYvMGU3CkRIYWNa
+      VC8rT3p0QkgxUndrRzJ5bU05NEhmOEhJNng3cTZ5ZlJUQVpPcWVPTXJQQ1lUY2x1QWdFOU5za29Q
+      dmoKWDVxQVNha0J0WElTS0lzT1U4NE4wLzJIRE4zV0VHTVh2b0hVUXU2dnJpajZCd2l3eEthdzFB
+      S3dXRU5Lb2dhNwo3NWJQWE4zTStKVFNhSUtFN2RaYkt6dngwWmkwaDVYK2J4YzNCSmkzWi9Dc1VC
+      Q3pFK1kwU0ZldE9pWW15bC8yClltbm5lWW9WQWdNQkFBRUNnZ0VCQUpIWGlONmJjdEF5bitEY29I
+      bHNOa2h0VncrSms1YlhJdXRHWGpIVEp0aVUKSy8vc2lBR0M3OElaTXlYbWkwS25kUFZDZEJ3U2hS
+      T1ZXOHhXV0lpWHVaeHkyWnZtODcyeHFYNEFoM0pzTjcvUQpOclhkVkJVRG8zOHp3SUdreHFJZkl6
+      OWNyWjRBbitKL2VxNXphVGZSSHpDTHRzd01xalJTMmhGZUJZNWNLckJZCjRia1NER1RQL2M1Y1A3
+      eFMvVXdhaVRSMlB0ZDQxZjR6VHlkNGw1cmwzMFRZSHBhelFObGJkeGNPVjRqaDJSbnAKRTArY0ZF
+      dkVmZWFnVnE3Um1mQlNjS0c1cGs0cWNSRzBxMlFITXlLNXkwMGhkWXZoZFJqU2dON3hJRGtlTzVC
+      OApzOC90U0xVNzhuQ2wyZ0E5SUt4VFhZTGl0cElTd1o4MVEwNG1FQUtSUnRFQ2dZRUErNmxLbmhu
+      Ly9hWGVya0xvClpPTE9qV1FaaGgwMDVqSGROeFg3RFpxTHBUcnJmeGM4djE1S1dVa0FLMUgwUUhx
+      WXZmUHJiYnNCVjFNWTF4WHQKc0tta2V1L2s4ZkpRekNJdkZONEsySjVXNWtNZnE5UFN3NWQzWFBl
+      RGFRdVhVVmF4QlZwMGd6UEVQSG1rS1JiQQpBa1VxWTBvSndBOWdNS2Y4ZEsrZmxtTFpmYnNDZ1lF
+      QXhPNFJvajJHNDYvT294MUdFWkd4ZExwaU1wcjlyRWRSCkpsU1o5a01HZmRkTkxWN3NGcDZ5UFhE
+      Y3ljL0FPcWVOajd0dzFNeW9UM0FyNDU0K1YwcTgzRVp6Q1h2czRVNmYKalVyZkZjb1ZXSXdmOUFW
+      L0o0S1d6TUl6ZnFQSWVOd3F5bVpLZDZCclpnY1hYdkFFUFd0Mjdtd080YTFHaEM0RwpvWnYwdDNs
+      QXNtOENnWUFROEMwSWhTRjR0Z0JONUV6MTlWb0hwRFFmbGJtb3dMUnQ3N25OQ1pqYWp5T29reXpR
+      CmlJMGlnMHBTb0JwN2VJVHRUQXlOZnlldzgvUFpEaTNJVlRLdjM1T2VRVHYwOFZ3UDRINEVaR3Zl
+      NWFldERmM0MKa21CRFRwbDJxWVFPd25INXRVUGdUTXlwY1ZwK05Yekk2bFRYQi9XdUNwcmp5M3F2
+      Yzk2ZTVacFQzd0tCZ1FDOApYbnkvazlyVEwvZVlUd2dYQmlXWVlqQkw5N1Z1ZFVsS1FPS0VqTmhJ
+      eHdrcnZRQlhJcldiejdsaDBUY3U0OWFsCkJjYUh4cnU0UUxPNnBrTTdmR0hxMGZoM3VmSjhFWmpN
+      cmpGMXhqZGsyNlEwNW8wYVhlK2hMS0hWSVJWQmhsZm8KQXJCNGZSbytIY3BkSlhqb3gwS2NEUUN2
+      SGUrMXY5RFlCVFd2eW12NFFRS0JnQnkzWUg3aEt6MzVEY1h2QTJyNApLaXM5YTR5Y3VacVRYb2Nr
+      TzRya2NJd0M2Q0pwOUpiSERJUnppZzhIWU9hUnFtWjRhK2NvcUxtZGRYcjJ1T0YxCjcraUF4eEcx
+      S3pkVDZ1Rk5kK2UvajJjZFVqbnFjU216NDlQUnRkRHN3Z3lZaG9EVCtXNHlWR05RNFZ1S2c2YTMK
+      WjNwQytLVGRvSFNLZUEyRnlBR25TVXBECi0tLS0tRU5EIFBSSVZBVEUgS0VZLS0tLS0K
+
+
+
+ingress:
+  enabled: true
+  className: ""
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    acme.cert-manager.io/http01-edit-in-place: "true"
+  host: connector.gaiax.cluster.tsachweh.de
+  tls:
+    - secretName: connector.gaiax.cluster.tsachweh.de
+      hosts:
+        - connector.gaiax.cluster.tsachweh.de
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+livenessProbe:
+  httpGet:
+    path: /management/v2/dataplanes
+    port: 19193
+readinessProbe:
+  httpGet:
+    path: /management/v2/dataplanes
+    port: 19193
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

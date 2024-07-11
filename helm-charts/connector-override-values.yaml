@@ -1,0 +1,24 @@
+service:
+  edc:
+    idsid: urn:connector:<connector_id>
+    id: <connector_id>
+    company:
+      vatId: <vat_id>
+      name: <company_name>
+      location: <location_latitude_longitude>
+      countrySubdivisionCode: DE-NW
+    callback:
+      address: https://edc.<public-domain>/protocol
+      token_validation: https://edc.<public-domain>/control/token
+
+ingress:
+  enabled: true
+  className: ""
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    acme.cert-manager.io/http01-edit-in-place: "true"
+  host: edc.<public-domain>
+  tls:
+    - secretName: connector1-tls
+      hosts:
+        - edc.<public-domain>

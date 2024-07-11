@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "connector.fullname" . }}
+  labels:
+    {{- include "connector.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.http.port }}
+      targetPort: {{ .Values.service.http.port }}
+      protocol: TCP
+      name: http
+    - port: {{ .Values.service.management.port }}
+      targetPort: {{ .Values.service.management.port }}
+      protocol: TCP
+      name: management
+    - port: {{ .Values.service.protocol.port }}
+      targetPort: {{ .Values.service.protocol.port }}
+      protocol: TCP
+      name: protocol
+    - port: {{ .Values.service.public.port }}
+      targetPort: {{ .Values.service.public.port }}
+      protocol: TCP
+      name: public
+    - port: {{ .Values.service.control.port }}
+      targetPort: {{ .Values.service.control.port }}
+      protocol: TCP
+      name: control
+  selector:
+    {{- include "connector.selectorLabels" . | nindent 4 }}
