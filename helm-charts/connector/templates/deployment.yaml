@@ -1,0 +1,213 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "connector.fullname" . }}
+  labels:
+    {{- include "connector.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "connector.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "connector.labels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "connector.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.http.port | default 19191 }}
+              protocol: TCP
+            - name: managment
+              containerPort: {{ .Values.service.management.port | default 19193 }}
+              protocol: TCP
+            - name: protocol
+              containerPort: {{ .Values.service.protocol.port | default 19194 }}
+              protocol: TCP
+            - name: public
+              containerPort: {{ .Values.service.public.port | default 19291 }}
+              protocol: TCP
+            - name: control
+              containerPort: {{ .Values.service.control.port | default 19192 }}
+              protocol: TCP
+          env:
+            - name: WEB_HTTP_PORT
+              value: {{ .Values.service.http.port | default 19191 | quote }}
+            - name: WEB_HTTP_PATH
+              value: {{ .Values.service.http.path | default "/api" | quote }}
+            - name: WEB_HTTP_MANAGEMENT_PORT
+              value: {{ .Values.service.management.port | default 19193 | quote }}
+            - name: WEB_HTTP_MANAGEMENT_PATH
+              value: {{ .Values.service.management.path | default "/management" | quote }}
+            - name: WEB_HTTP_PROTOCOL_PORT
+              value: {{ .Values.service.protocol.port | default 19194 | quote }}
+            - name: WEB_HTTP_PROTOCOL_PATH
+              value: {{ .Values.service.protocol.path | default "/protocol" | quote }}
+            - name: WEB_HTTP_PUBLIC_PORT
+              value: {{ .Values.service.public.port | default 19291 | quote }}
+            - name: WEB_HTTP_PUBLIC_PATH
+              value: {{ .Values.service.public.path | default "/public" | quote }}
+            - name: WEB_HTTP_CONTROL_PORT
+              value: {{ .Values.service.control.port | default 19192 | quote }}
+            - name: WEB_HTTP_CONTROL_PATH
+              value: {{ .Values.service.control.path | default "/control" | quote }}
+
+            - name: EDC_IDS_ID
+              value: {{ .Values.service.edc.idsid | default "urn:connector:provider" }}
+            - name: EDC_PARTICIPANT_ID
+              value: {{ .Values.service.edc.id | default "participant" }}
+            - name: EDC_CONNECTOR_NAME
+              value: {{ .Values.service.edc.id | default "participant" }}
+            - name: EDC_DSP_CALLBACK_ADDRESS
+              value: {{ .Values.service.edc.callback.dsp | default "http://localhost:19194" }}
+            - name: EDC_DATAPLANE_TOKEN_VALIDATION_ENDPOINT
+              value: {{ .Values.service.edc.callback.tokenValidation | default "http://localhost:19192/token" }}
+            - name: EDC_PUBLIC_KEY_ALIAS
+              value: {{ .Values.service.edc.publicKeyAlias | default "public-key" | quote }}
+            - name: EDC_TRANSFER_DATAPLANE_TOKEN_SIGNER_PRIVATE_KEY_ALIAS
+              value: {{ .Values.service.edc.transferDataplaneTokenSignerPrivateKeyAlias | default "1" | quote }}
+            - name: EDC_TRANSFER_PROXY_TOKEN_SIGNER_PRIVATEKEY_ALIAS
+              value: {{ .Values.service.edc.transferProxyTokenSignerPrivateKeyAlias | default "1" | quote }}
+            - name: EDC_TRANSFER_PROXY_TOKEN_VERIFIER_PUBLICKEY_ALIAS
+              value: {{ .Values.service.edc.transferProxyTokenVerifierPrivateKeyAlias | default "public-key" | quote }}
+            - name: EDC_API_AUTH_KEY
+              value: {{ .Values.service.edc.apiAuthKey | default "ApiKeyDefaultValue" | quote }}
+            - name: EDC_RECEIVER_HTTP_ENDPOINT
+              value: {{ .Values.service.edc.httpReceiverEndpoint | default "http://localhost:4000/receiver/urn:connector:provider/callback" | quote }}
+            - name: EDC_DATAPLANE_API_PUBLIC_BASEURL
+              value: {{ .Values.service.edc.callback.public | default "http://localhost:29191/public/" | quote }}
+
+            - name: EDC_KEYSTORE
+              value: {{ .Values.service.edc.keystore.path | default "/app/resources/certs/cert.pfx" | quote }}
+            - name: EDC_KEYSTORE_PASSWORD
+              value: {{ .Values.service.edc.keystore.password | default "123456" | quote }}
+            - name: EDC_VAULT
+              value: {{ .Values.service.edc.keystore.vault | default "/app/resources/configuration/connector-vault.properties" | quote }}
+            
+            - name: EDC_CONVERTER_FC_URL
+              value: {{ .Values.service.edc.converter.federatedCatalog | default "https://fc.gaiax4roms.hotsprings.io/self-descriptions" | quote }}
+            - name: EDC_CONVERTER_SD_URL
+              value: {{ .Values.service.edc.converter.selfDescription | default "https://gaiax4roms.hotsprings.io/" | quote }}
+            - name: EDC_CONVERTER_SD_AUTHORIZATION_USER
+              value: {{ .Values.service.edc.converter.selfDescriptionAuthorizationUser | default "api" | quote }}
+            - name: EDC_CONVERTER_CES_URL
+              value: {{ .Values.service.edc.converter.ces | default "https://ces-main.lab.gaia-x.eu/credentials-events" | quote }}
+            - name: EDC_CONVERTER_NOTAR_URL
+              value: {{ .Values.service.edc.converter.notar | default "https://registrationnumber.notary.lab.gaia-x.eu/v1-staging/registrationNumberVC" | quote }}
+            - name: EDC_CONVERTER_COMPLIANT_URL
+              value: {{ .Values.service.edc.converter.compliance | default "https://compliance.lab.gaia-x.eu/v1-staging/api/credential-offers" | quote }}
+            - name: EDC_CONVERTER_SD_AUTHORIZATION_PW
+              value: {{ .Values.service.edc.converter.selfDescriptionAuthorizationPassword | default "AuRbD2xmTSYECk59s7BezM" | quote }}
+            
+            - name: EDC_CONVERTER_VAT_ID
+              value: {{ .Values.service.edc.company.vatId | quote }}
+            - name: EDC_CONVERTER_COMPANY_NAME
+              value: {{ .Values.service.edc.company.name | quote }}
+            - name: EDC_CONVERTER_LOCATION
+              value: {{ .Values.service.edc.company.location | quote }}
+            - name: EDC_CONVERTER_COUNTRY_SUBDIVISION_CODE
+              value: {{ .Values.service.edc.company.countrySubdivisionCode | default "AuRbD2xmTSYECk59s7BezM" | quote }}
+
+            - name: EDC_CONTRACT_GAIAXRESSOURCEPATH
+              value: {{ .Values.service.edc.contract.gaiaxResourcePath | default "/resources/gaia-x/" | quote }}
+            - name: EDC_CONVERTER_KEYCLOAK_URL
+              value: {{ .Values.service.edc.converter.keycloak.url | default "https://keycloak.gaiax4roms.hotsprings.io/realms/gaiax4roms/protocol/openid-connect/token" | quote }}
+            - name: EDC_CONVERTER_KEYCLOAK_USERNAME
+              value: {{ .Values.service.edc.converter.keycloak.username | default "test" | quote }}
+            - name: EDC_CONVERTER_KEYCLOAK_PASSWORD
+              value: {{ .Values.service.edc.converter.keycloak.password | default "test" | quote }}
+            - name: EDC_CONVERTER_KEYCLOAK_CLIENT
+              value: {{ .Values.service.edc.converter.keycloak.client | default "federated-catalogue" | quote }}
+            - name: EDC_CONVERTER_KEYCLOAK_CLIENT_SECRET
+              value: {{ .Values.service.edc.converter.keycloak.clientSecret | default "keycloak-secret" | quote }}
+            - name: EDC_CONVERTER_KEYCLOAK_SCOPE
+              value: {{ .Values.service.edc.converter.keycloak.scope | default "openid" | quote }}
+
+            - name: USER_DIR
+              value: {{ .Values.service.userDir | default "/app" | quote }}
+            - name: EDC_WEB_REST_CORS_ENABLED
+              value: {{ .Values.service.edc.web.cors.enabled | default "true" | quote }}
+            - name: EDC_WEB_REST_CORS_HEADERS
+              value: {{ .Values.service.edc.web.cors.headers | default "origin,content-type,accept,authorization,x-api-key" | quote }}
+          livenessProbe:
+            {{- toYaml .Values.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts: 
+            - name: certsecrets
+              mountPath: "/app/resources/certs"
+              readOnly: true
+            - name: gaiaxressources
+              mountPath: "/app/resources/gaia-x"
+              readOnly: false
+            - name: applicationconfig
+              mountPath: "/app/resources/configuration"
+              readOnly: true
+      initContainers:
+        - name: download-dataset
+          image: busybox
+          command: ["wget", "-O", "app/resources/gaia-x/dataset.zip", {{ .Values.initContainer.fetchUrl | quote }}]
+          volumeMounts:
+            - mountPath: "/app/resources/gaia-x"
+              name: gaiaxressources
+              readOnly: false
+        - name: unzip-dataset
+          image: busybox
+          command: ["unzip", "/app/resources/gaia-x/dataset.zip", "-d", "/app/resources/gaia-x/"]
+          volumeMounts:
+            - mountPath: "/app/resources/gaia-x"
+              name: gaiaxressources
+              readOnly: false
+        - name: delete-zip
+          image: busybox
+          command: ["rm", "-rf", "/app/resources/gaia-x/dataset.zip"]
+          volumeMounts:
+            - mountPath: "/app/resources/gaia-x"
+              name: gaiaxressources
+              readOnly: false
+      volumes:
+        - name: certsecrets
+          secret:
+            secretName: {{ include "connector.fullname" . }}-certsecrets
+        - name: gaiaxressources
+          persistentVolumeClaim:
+            claimName: {{ include "connector.fullname" . }}-gaiaxpvc
+        - name: applicationconfig
+          configMap:
+            name: {{ include "connector.fullname" . }}-appconfigmap
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
