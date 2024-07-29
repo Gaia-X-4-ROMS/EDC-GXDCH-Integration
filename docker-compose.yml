@@ -43,8 +43,8 @@ services:
       EDC_KEYSTORE: /app/resources/certs/cert.pfx
       EDC_KEYSTORE_PASSWORD: 123456
       EDC_VAULT: /app/resources/configuration/connector-vault.properties
-      #EDC_FS_CONFIG: /app/consumer-with-listener/resources/configuration/connector-configuration.properties #nicht nötig, weil wir hier alle Parameter setzen
-
+      EDC_FS_CONFIG: /app/resources/connector/configuration/connector-configuration.properties
+      
       #Optionale Felder. Die Defaults verweisen auf die 4ROMs Services und Wege:
       EDC_CONVERTER_FC_URL: https://fc.gaiax4roms.hotsprings.io/self-descriptions
       EDC_CONVERTER_SD_URL: https://gaiax4roms.hotsprings.io/
